@@ -1,4 +1,7 @@
 [jira]
 hostname = jira.example.com
+protocol = https
+port = 443
+baseURL = /jira
 username = admin
 password = changeme

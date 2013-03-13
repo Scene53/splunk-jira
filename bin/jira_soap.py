@@ -95,15 +95,19 @@ try:
           ('project', None),
           ('type', None),
           ('created', None),
+          ('duedate', None),
           ('updated', None))
+    
+    
+    customFields = {"customfield_10730" : "Cost", "customfield_10630" : "Product" }
+
     for issue in issues:
         row = jiracommon.flatten(issue, keys)
+        # Handle custom fields
         for f in issue['customFieldValues']:
-            if f['customfieldId'] == "customfield_10020":
-                row['SFDCcase'] = f['values']
-            if f['customfieldId'] == "customfield_10091":
-                row['TargetRelease'] = f['values']
-
+            if f['customfieldId'] in customFields:
+                row[customFields[f['customfieldId']]] = f['values']
+                
         row['_time'] = int(time.mktime(time.strptime(row['updated'], '%Y-%m-%d %H:%M:%S')))
         row['host'] = hostname
         row['index'] = 'jira'
